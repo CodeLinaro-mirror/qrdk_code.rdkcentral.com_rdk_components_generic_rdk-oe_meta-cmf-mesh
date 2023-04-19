@@ -3,6 +3,7 @@ SUMMARY = "Mesh Agent"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 DEPENDS = "ccsp-common-library webconfig-framework utopia dbus rdk-logger telemetry wrp-c cjson libparodus breakpad-wrapper"
 DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
@@ -19,6 +20,26 @@ SRC_URI = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/MeshAgent;protocol=${
 
 SRCREV_mesh-agent = "${AUTOREV}"
 PV = "${RDK_RELEASE}+git${SRCPV}"
+
+SRC_URI += "\
+file://enabling_dhcp_lease_resync.patch;apply=no \
+file://meshagent-enable-ovs-default.patch;apply=no \
+"
+
+# we need to patch to code for mesh-agent
+do_refplatform_meshagent_patches() {
+    cd ${S}
+    if [ ! -e patch_applied ]; then
+        bbnote "Patching enabling_dhcp_lease_resync.patch"
+        patch  -p1 < ${WORKDIR}/enabling_dhcp_lease_resync.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
+
+        bbnote "Patching meshagent-enable-ovs-default.patch"
+        patch  -p1 < ${WORKDIR}/meshagent-enable-ovs-default.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
+
+        touch patch_applied
+    fi
+}
+addtask refplatform_meshagent_patches after do_unpack before do_configure
 
 CFLAGS_append = " \
     -I${STAGING_INCDIR}/dbus-1.0 \
@@ -76,6 +97,7 @@ do_install_append () {
 
     #CCSP Initialization Targets
     install -D -m 0644 ${S}/systemd_units/meshAgent.path ${D}${systemd_unitdir}/system/meshAgent.path
+    install -D -m 0644 ${S}/systemd_units/meshAgent.service ${D}${systemd_unitdir}/system/meshAgent.service
     install -D -m 0644 ${S}/systemd_units/meshwifi.service ${D}${systemd_unitdir}/system/meshwifi.service
 
 
@@ -101,7 +123,7 @@ FILES_${PN}-gtest = "\
 
 # IMPORTANT! Do not add meshwifi.service to the SYSTEMD_SERVICE define below. We don't want it automatically
 # started.
-SYSTEMD_SERVICE_${PN} = " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', 'meshAgent.path', '', d)}"
+SYSTEMD_SERVICE_${PN} = " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', 'meshAgent.path meshAgent.service', '', d)}"
 
 FILES_${PN}-ccsp = " \
     /fss/gw/usr/ccsp/* \
@@ -123,6 +145,7 @@ FILES_${PN} = " \
     ${sbindir}/led_control_script.sh \
 "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
+FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', ' ${systemd_unitdir}/system/meshAgent.service', '', d)} "
 
 FILES_${PN}-dbg = " \
     ${prefix}/ccsp/mesh/.debug \
