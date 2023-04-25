@@ -11,7 +11,11 @@ OPENSYNC_CORE_BRANCH ?= "${OPENSYNC_DEFAULT_BRANCH}"
 
 OPENSYNC_CORE_URI ?= "${OPENSYNC_CORE_REPO_PATH};protocol=${OPENSYNC_CORE_REPO_PROTOCOL};branch=${OPENSYNC_CORE_BRANCH};name=core;destsuffix=git/core"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
 SRC_URI += "${OPENSYNC_CORE_URI}"
+
+SRC_URI += "file://adding_structures_for_blaster.patch"
 
 S = "${WORKDIR}/git/core"
 
