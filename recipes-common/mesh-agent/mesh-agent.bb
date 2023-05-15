@@ -8,11 +8,14 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 DEPENDS = "ccsp-common-library webconfig-framework utopia dbus rdk-logger telemetry wrp-c cjson libparodus breakpad-wrapper"
 DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 
-DEPENDS_append_dunfell = " trower-base64"
-RDEPENDS_${PN}_append_dunfell = " bash"
+DEPENDS_append = " trower-base64"
+RDEPENDS_${PN}_append = " trower-base64 bash"
 
-LDFLAGS_remove_dunfell = "-lsafec-3.5"
-LDFLAGS_append_dunfell = " -lsyscfg -lsysevent -lbreakpadwrapper -lsafec-3.5.1"
+LDFLAGS_remove = "-lsafec-3.5"
+LDFLAGS_append = " -lsyscfg -lsysevent -lbreakpadwrapper"
+
+LDFLAGS_append_dunfell = " -lsafec-3.5.1"
+LDFLAGS_append_kirkstone = " -lsafec"
 
 require recipes-ccsp/ccsp/ccsp_common.inc
 
@@ -55,7 +58,7 @@ CFLAGS_append = " \
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
 
-CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-int-to-pointer-cast -Wno-address -Wno-unused-parameter"
+CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-int-to-pointer-cast -Wno-address -Wno-unused-parameter -Wno-misleading-indentation"
 
 LDFLAGS_append = " \
     -ldbus-1 \
@@ -67,8 +70,6 @@ LDFLAGS_append = " \
     -llibparodus \
 "
 LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
-LDFLAGS_append_dunfell = " -lbreakpadwrapper -lsyscfg -lsysevent"
-RDEPENDS_${PN}_append_dunfell = " bash"
 
 S = "${WORKDIR}/git"
 
