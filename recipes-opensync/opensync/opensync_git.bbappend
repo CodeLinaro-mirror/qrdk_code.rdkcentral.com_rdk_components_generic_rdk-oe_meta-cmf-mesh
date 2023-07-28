@@ -8,10 +8,19 @@ OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file:
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1101-onewifi-code.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1102-onewifi-bm-sm.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1103-onewifi-ocs-support.patch;patchdir=../core', ' ', d)}"
+OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/rpi_fix_for_64bit_build_errors.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += " file://${PLUME_CORE_PATCHES}/createVersion.patch;patchdir=../core"
 
 OPENSYNC_PLATFORM_URI += " file://${PLUME_PLATFORM_RDK_PATCHES}/opensync_compilation_errors_fix_64b.patch;patchdir=../platform/rdk"
 
+DEPENDS += " c-ares"
 SYSROOT_DIRS += "/usr/opensync/lib"
 EXTRA_OEMAKE += "INSTALL_HEADERS=y"
-FILES_${PN} += "${prefix}/include/opensync/"
+TARGET_CC_ARCH_append_kirkstone = "${LDFLAGS}"
+do_install_append_kirkstone () {
+          rm ${D}/sbin/reboot
+          rm -r ${D}/sbin 
+}
+FILES_${PN} += "${prefix}/include/opensync/ \
+                /etc \
+ "
