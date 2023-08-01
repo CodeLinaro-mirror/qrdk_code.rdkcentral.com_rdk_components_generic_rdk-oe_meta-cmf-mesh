@@ -44,6 +44,10 @@ do_refplatform_meshagent_patches() {
 }
 addtask refplatform_meshagent_patches after do_unpack before do_configure
 
+do_compile_prepend () {
+    (${PYTHON} ${STAGING_BINDIR_NATIVE}/dm_pack_code_gen.py ${S}/config/TR181-MeshAgent.xml ${S}/source/MeshAgentSsp/dm_pack_datamodel.c)
+}
+
 CFLAGS_append = " \
     -I${STAGING_INCDIR}/dbus-1.0 \
     -I${STAGING_LIBDIR}/dbus-1.0/include \
