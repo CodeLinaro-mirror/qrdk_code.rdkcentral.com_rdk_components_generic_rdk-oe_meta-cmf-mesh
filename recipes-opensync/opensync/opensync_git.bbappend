@@ -8,6 +8,7 @@ OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file:
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1101-onewifi-code.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1102-onewifi-bm-sm.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1103-onewifi-ocs-support.patch;patchdir=../core', ' ', d)}"
+OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/0001-RDKB-48818-SM-APP-Change-path-for-ds_tree-headers.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/rpi_fix_for_64bit_build_errors.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += " file://${PLUME_CORE_PATCHES}/createVersion.patch;patchdir=../core"
 
@@ -24,3 +25,9 @@ do_install_append_kirkstone () {
 FILES_${PN} += "${prefix}/include/opensync/ \
                 /etc \
  "
+
+do_install_append () {
+         install -d ${D}${includedir}/src
+         cp ${S}/src/lib/common/src/memutil.c.h ${D}${includedir}/src
+         cp ${S}/work/*/pb-inc/opensync_stats.pb-c.h  ${D}${includedir}/opensync
+}
