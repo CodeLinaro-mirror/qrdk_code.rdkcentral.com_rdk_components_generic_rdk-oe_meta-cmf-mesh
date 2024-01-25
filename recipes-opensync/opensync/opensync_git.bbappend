@@ -14,6 +14,7 @@ OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file:
 OPENSYNC_CORE_URI += " file://${PLUME_CORE_PATCHES}/createVersion.patch;patchdir=../core"
 
 OPENSYNC_PLATFORM_URI += " file://${PLUME_PLATFORM_RDK_PATCHES}/opensync_compilation_errors_fix_64b.patch;patchdir=../platform/rdk"
+OPENSYNC_PLATFORM_URI += " file://${PLUME_PLATFORM_RDK_PATCHES}/Added_rdkbwifi_db_creation_changes.patch;patchdir=../platform/rdk"
 
 DEPENDS += " c-ares"
 SYSROOT_DIRS += "/usr/opensync/lib"

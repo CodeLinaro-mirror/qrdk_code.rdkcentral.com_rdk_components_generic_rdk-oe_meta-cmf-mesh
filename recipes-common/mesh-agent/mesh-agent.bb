@@ -114,6 +114,11 @@ do_install_append () {
         install -d ${D}/etc
         touch ${D}/etc/onewifi_enabled
     fi
+
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', 'true', 'false', d)}; then
+        install -d ${D}/etc
+        touch ${D}/etc/WFO_enabled
+    fi
     install -d ${D}${sbindir}
     install -m 777 ${S}/scripts/led_control_script.sh ${D}${sbindir}/led_control_script.sh
 }
@@ -150,6 +155,7 @@ FILES_${PN} = " \
     ${sbindir}/led_control_script.sh \
 "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
+FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', '/etc/WFO_enabled', '', d)} "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', ' ${systemd_unitdir}/system/meshAgent.service', '', d)} "
 
 FILES_${PN}-dbg = " \
