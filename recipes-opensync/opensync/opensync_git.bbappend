@@ -11,6 +11,7 @@ OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file:
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/0001-RDKB-48818-SM-APP-Change-path-for-ds_tree-headers.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/rpi_fix_for_64bit_build_errors.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' file://${PLUME_CORE_PATCHES}/1103-onewifi-wifi-7.patch;patchdir=../core', ' ', d)}"
+OPENSYNC_CORE_URI += "${@bb.utils.contains('DISTRO_FEATURES', 'extender', ' file://${PLUME_CORE_PATCHES}/opensync_rpi_kirk_build_error.patch;patchdir=../core', ' ', d)}"
 OPENSYNC_CORE_URI += " file://${PLUME_CORE_PATCHES}/createVersion.patch;patchdir=../core"
 
 OPENSYNC_PLATFORM_URI += " file://${PLUME_PLATFORM_RDK_PATCHES}/opensync_compilation_errors_fix_64b.patch;patchdir=../platform/rdk"
