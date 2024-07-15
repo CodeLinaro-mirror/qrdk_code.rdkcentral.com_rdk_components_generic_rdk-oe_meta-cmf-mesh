@@ -102,8 +102,10 @@ do_install_append () {
 
     #CCSP Initialization Targets
     install -D -m 0644 ${S}/systemd_units/meshAgent.path ${D}${systemd_unitdir}/system/meshAgent.path
-    install -D -m 0644 ${S}/systemd_units/meshAgent.service ${D}${systemd_unitdir}/system/meshAgent.service
     install -D -m 0644 ${S}/systemd_units/meshwifi.service ${D}${systemd_unitdir}/system/meshwifi.service
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', 'true', 'false', d)}; then
+        install -D -m 0644 ${S}/systemd_units/meshAgent.service ${D}${systemd_unitdir}/system/meshAgent.service
+    fi
 
 
     install -m 775 ${S}/config/MeshAgent.cfg -t ${D}/usr/ccsp/mesh
