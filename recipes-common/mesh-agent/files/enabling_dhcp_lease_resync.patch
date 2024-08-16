@@ -16,7 +16,7 @@ index 25a2621..1e86bab 100644
      bool wfo_mode = false;
  #endif
  
-+#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
 +    async_id_t lease_resync_asyncid;
 +#endif
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     TUPLE_FLAG_EVENT);
@@ -26,7 +26,7 @@ index 25a2621..1e86bab 100644
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WFO_ENABLED].sysStr,                     &mesh_wfo_enabled_asyncid);
  #endif
  
-+#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
 +    sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   TUPLE_FLAG_EVENT);
 +    sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   &lease_resync_asyncid);
 +#endif
@@ -38,7 +38,7 @@ index 25a2621..1e86bab 100644
  
              }
  #endif //WAN_FAILOVER_SUPPORTED
-+#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) 
 +            else if (strcmp(name, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr)==0)
 +            {
 +                //This will handle sending lease information to plume for every new connection, without restarting the MeshAgent
