@@ -5,7 +5,7 @@ SRCREV_core ?= "${AUTOREV}"
 OPENSYNC_DEFAULT_PROTOCOL ?= "https"
 OPENSYNC_DEFAULT_BRANCH ?= "osync_4.4.0"
 
-OPENSYNC_CORE_REPO_PATH ?= "git://git@github.com/plume-design/opensync.git"
+OPENSYNC_CORE_REPO_PATH ?= "git://github.com/plume-design/opensync.git"
 OPENSYNC_CORE_REPO_PROTOCOL ?= "${OPENSYNC_DEFAULT_PROTOCOL}"
 OPENSYNC_CORE_BRANCH ?= "${OPENSYNC_DEFAULT_BRANCH}"
 
