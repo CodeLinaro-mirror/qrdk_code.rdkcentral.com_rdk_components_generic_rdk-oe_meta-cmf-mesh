@@ -96,8 +96,9 @@ do_install_append () {
     install -m 644 ${S}/source/include/*.h ${D}/usr/include/mesh
     install -m 644 ${S}/config/TR181-MeshAgent.xml -t ${D}/usr/ccsp/mesh
     install -m 755 ${S}/scripts/active_host_filter.sh -t ${D}/usr/ccsp/mesh
-    install -m 775 ${S}/scripts/channel_keepout_setup.sh ${D}/usr/ccsp/mesh
+    install -m 775 ${S}/scripts/add_cron_entries.sh ${D}/usr/ccsp/mesh
     install -m 775 ${S}/scripts/run_channel_keepout.sh ${D}/usr/ccsp/mesh
+    install -m 775 ${S}/scripts/rdkbHCMRecordingMonitor.sh ${D}/usr/ccsp/mesh
     ln -sf /usr/bin/meshAgent ${D}/usr/ccsp/mesh/meshAgent
 
     install -d ${D}${systemd_unitdir}/system
@@ -157,8 +158,10 @@ FILES_${PN} = " \
     ${libdir}/libMeshAgentSsp.so* \
     ${libdir}/libXmeshDiags.so* \
     ${sbindir}/led_control_script.sh \
-    ${prefix}/ccsp/mesh/channel_keepout_setup.sh \
+    ${prefix}/ccsp/mesh/add_cron_entries.sh \
+    ${sbindir}/dscpinherit.sh \
     ${prefix}/ccsp/mesh/run_channel_keepout.sh \
+    ${prefix}/ccsp/mesh/rdkbHCMRecordingMonitor.sh \
 "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', '/etc/WFO_enabled', '', d)} "
