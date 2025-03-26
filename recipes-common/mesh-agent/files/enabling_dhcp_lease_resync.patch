@@ -12,18 +12,17 @@ index 088b248..dda97a1 100644
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     TUPLE_FLAG_EVENT);
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     &wifi_init_asyncid);
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_SSID_NAME].sysStr,                 TUPLE_FLAG_EVENT);
-@@ -5811,6 +5814,11 @@ static void *Mesh_sysevent_handler(void *data)
+@@ -5927,6 +5927,10 @@
+ #endif
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           TUPLE_FLAG_EVENT);
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           &wifi_dynamic_profile_asyncid);
- 
 +#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
 +    sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   TUPLE_FLAG_EVENT);
 +    sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   &lease_resync_asyncid);
 +#endif
-+
+     sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_FIREWALL_START].sysStr,                     TUPLE_FLAG_EVENT);
+     sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_FIREWALL_START].sysStr,                     &mesh_firewall_restart_asyncid);
      for (;;)
-     {
-         unsigned char name[64], val[256];
 @@ -7289,6 +7297,13 @@ static void *Mesh_sysevent_handler(void *data)
                      msgQSend(&mMsg);
                  }
