@@ -1,10 +1,10 @@
 diff --git a/source/MeshAgentSsp/cosa_mesh_apis.c b/source/MeshAgentSsp/cosa_mesh_apis.c
-index 088b248..dda97a1 100644
+index 2f0d288..2c6a45f 100644
 --- a/source/MeshAgentSsp/cosa_mesh_apis.c
 +++ b/source/MeshAgentSsp/cosa_mesh_apis.c
-@@ -5755,6 +5755,9 @@ static void *Mesh_sysevent_handler(void *data)
- #endif
+@@ -5886,6 +5886,9 @@ static void *Mesh_sysevent_handler(void *data)
      async_id_t wifi_dynamic_profile_asyncid;
+     async_id_t mesh_firewall_restart_asyncid;
  
 +#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
 +    async_id_t lease_resync_asyncid;
@@ -12,7 +12,7 @@ index 088b248..dda97a1 100644
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     TUPLE_FLAG_EVENT);
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     &wifi_init_asyncid);
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_SSID_NAME].sysStr,                 TUPLE_FLAG_EVENT);
-@@ -5927,6 +5927,10 @@
+@@ -5941,6 +5944,10 @@ static void *Mesh_sysevent_handler(void *data)
  #endif
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           TUPLE_FLAG_EVENT);
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           &wifi_dynamic_profile_asyncid);
@@ -23,8 +23,8 @@ index 088b248..dda97a1 100644
      sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_FIREWALL_START].sysStr,                     TUPLE_FLAG_EVENT);
      sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_FIREWALL_START].sysStr,                     &mesh_firewall_restart_asyncid);
      for (;;)
-@@ -7289,6 +7297,13 @@ static void *Mesh_sysevent_handler(void *data)
-                     msgQSend(&mMsg);
+@@ -7505,6 +7512,13 @@ static void *Mesh_sysevent_handler(void *data)
+                     }
                  }
              }
 +#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
@@ -37,11 +37,3 @@ index 088b248..dda97a1 100644
              else
              {
                  MeshWarning("undefined event %s \n",name);
-@@ -7371,7 +7386,6 @@ static void Mesh_InitClientList(void)
-     }
- }
- 
--
- /**
-  *  @brief Mesh Agent Initialize code
-  *
