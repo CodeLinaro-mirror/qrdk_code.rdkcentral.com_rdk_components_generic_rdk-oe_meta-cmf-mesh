@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 PLUME_CORE_PATCHES := "core"
 PLUME_PLATFORM_RDK_PATCHES := "platform/rdk"
@@ -21,8 +21,8 @@ OPENSYNC_PLATFORM_URI += " file://${PLUME_PLATFORM_RDK_PATCHES}/Added_rdkbwifi_d
 DEPENDS += " c-ares"
 SYSROOT_DIRS += "/usr/opensync/lib"
 EXTRA_OEMAKE += "INSTALL_HEADERS=y"
-TARGET_CC_ARCH_append_kirkstone = "${LDFLAGS}"
-do_install_append_kirkstone () {
+TARGET_CC_ARCH:append_kirkstone = "${LDFLAGS}"
+do_install:append_kirkstone () {
           rm ${D}/sbin/reboot
           rm -r ${D}/sbin 
 }
@@ -31,7 +31,7 @@ FILES_${PN} += "${prefix}/include/opensync/ \
                 ${includedir}/src/memutil.c.h \
  "
 
-do_install_append () {
+do_install:append () {
          install -d ${D}${includedir}/src
          cp ${S}/src/lib/common/src/memutil.c.h ${D}${includedir}/src
          cp ${S}/work/*/pb-inc/opensync_stats.pb-c.h  ${D}${includedir}/opensync

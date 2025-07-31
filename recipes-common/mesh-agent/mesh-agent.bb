@@ -3,19 +3,19 @@ SUMMARY = "Mesh Agent"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 DEPENDS = "ccsp-common-library webconfig-framework utopia dbus rdk-logger telemetry wrp-c cjson libparodus breakpad-wrapper"
-DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
+DEPENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 
-DEPENDS_append = " trower-base64"
-RDEPENDS_${PN}_append = " trower-base64 bash"
+DEPENDS:append = " trower-base64"
+RDEPENDS_${PN}:append = " trower-base64 bash"
 
-LDFLAGS_remove = "-lsafec-3.5"
-LDFLAGS_append = " -lsyscfg -lsysevent -lbreakpadwrapper"
+LDFLAGS:remove = "-lsafec-3.5"
+LDFLAGS:append = " -lsyscfg -lsysevent -lbreakpadwrapper"
 
-LDFLAGS_append_dunfell = " -lsafec-3.5.1"
-LDFLAGS_append_kirkstone = " -lsafec"
+LDFLAGS:append_dunfell = " -lsafec-3.5.1"
+LDFLAGS:append_kirkstone = " -lsafec"
 
 require recipes-ccsp/ccsp/ccsp_common.inc
 
@@ -44,11 +44,11 @@ do_refplatform_meshagent_patches() {
 }
 addtask refplatform_meshagent_patches after do_unpack before do_configure
 
-do_compile_prepend () {
+do_compile:prepend () {
     (${PYTHON} ${STAGING_BINDIR_NATIVE}/dm_pack_code_gen.py ${S}/config/TR181-MeshAgent.xml ${S}/source/MeshAgentSsp/dm_pack_datamodel.c)
 }
 
-CFLAGS_append = " \
+CFLAGS:append = " \
     -I${STAGING_INCDIR}/dbus-1.0 \
     -I${STAGING_LIBDIR}/dbus-1.0/include \
     -I${STAGING_INCDIR}/ccsp \
@@ -59,12 +59,12 @@ CFLAGS_append = " \
     -I${STAGING_INCDIR}/libparodus \
     -DENABLE_MESH_SOCKETS \
     "
-CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
-CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
+CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
+CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-int-to-pointer-cast -Wno-address -Wno-unused-parameter -Wno-misleading-indentation -Wno-unused-function"
 
-LDFLAGS_append = " \
+LDFLAGS:append = " \
     -ldbus-1 \
     -lrdkloggers \
     -ltelemetry_msgsender \
@@ -73,23 +73,23 @@ LDFLAGS_append = " \
     -lwrp-c \
     -llibparodus \
 "
-LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
+LDFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
 
 S = "${WORKDIR}/git"
 
 inherit autotools systemd pkgconfig
 
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '--enable-gtestapp', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', ' --enable-wanfailover ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' --enable-onewifi ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' --enable-gatewayfailoversupport ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_extender', ' --enable-rdkb_extender ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdk_ledmanager', ' --enable-rdk_ledmanager ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '--enable-gtestapp', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', ' --enable-wanfailover ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' --enable-onewifi ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' --enable-gatewayfailoversupport ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_extender', ' --enable-rdkb_extender ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdk_ledmanager', ' --enable-rdk_ledmanager ', '', d)}"
 
 # Enable OneWifi for this component only to fix build issues
-EXTRA_OECONF_append = " --enable-onewifi "
+EXTRA_OECONF:append = " --enable-onewifi "
 
-do_install_append () {
+do_install:append () {
     # Config files and scripts
     install -d ${D}/usr/ccsp/mesh
     install -d ${D}/usr/include/mesh
