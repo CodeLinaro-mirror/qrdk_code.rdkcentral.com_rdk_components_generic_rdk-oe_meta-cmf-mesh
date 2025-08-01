@@ -19,10 +19,7 @@ LDFLAGS_append_kirkstone = " -lsafec"
 
 require recipes-ccsp/ccsp/ccsp_common.inc
 
-SRC_URI = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/MeshAgent;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=mesh-agent"
-
-SRCREV_mesh-agent = "${AUTOREV}"
-PV = "${RDK_RELEASE}+git${SRCPV}"
+SRC_URI = "${CMF_GITHUB_ROOT}/mesh-agent;protocol=https;nobranch=1"
 
 SRC_URI += "\
 file://enabling_dhcp_lease_resync.patch;apply=no \
