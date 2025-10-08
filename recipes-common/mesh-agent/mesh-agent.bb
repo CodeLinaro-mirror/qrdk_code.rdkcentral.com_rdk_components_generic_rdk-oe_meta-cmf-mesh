@@ -9,7 +9,7 @@ DEPENDS = "ccsp-common-library webconfig-framework utopia dbus rdk-logger teleme
 DEPENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 
 DEPENDS:append = " trower-base64"
-RDEPENDS_${PN}:append = " trower-base64 bash"
+RDEPENDS:${PN}:append = " trower-base64 bash"
 
 LDFLAGS:remove = "-lsafec-3.5"
 LDFLAGS:append = " -lsyscfg -lsysevent -lbreakpadwrapper"
@@ -92,8 +92,8 @@ EXTRA_OECONF:append = " --enable-onewifi "
 do_install:append () {
     # Config files and scripts
     install -d ${D}/usr/ccsp/mesh
-    install -d ${D}/usr/include/mesh
-    install -m 644 ${S}/source/include/*.h ${D}/usr/include/mesh
+    install -d ${D}${includedir}/mesh
+    install -m 644 ${S}/source/include/*.h ${D}${includedir}/mesh
     install -m 644 ${S}/config/TR181-MeshAgent.xml -t ${D}/usr/ccsp/mesh
     install -m 755 ${S}/scripts/active_host_filter.sh -t ${D}/usr/ccsp/mesh
     install -m 775 ${S}/scripts/channel_keepout_setup.sh ${D}/usr/ccsp/mesh
@@ -130,23 +130,23 @@ do_install:append () {
 PACKAGES += "${PN}-ccsp"
 PACKAGES =+ "${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${PN}-gtest', '', d)}"
 
-FILES_${PN}-gtest = "\
+FILES:${PN}-gtest = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '${bindir}/MeshAgent_gtest.bin', '', d)} \
 "
 
 # IMPORTANT! Do not add meshwifi.service to the SYSTEMD_SERVICE define below. We don't want it automatically
 # started.
-SYSTEMD_SERVICE_${PN} = " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', 'meshAgent.path meshAgent.service', '', d)}"
+SYSTEMD_SERVICE:${PN} = " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', 'meshAgent.path meshAgent.service', '', d)}"
 
-FILES_${PN}-ccsp = " \
+FILES:${PN}-ccsp = " \
     /fss/gw/usr/ccsp/* \
     ${prefix}/ccsp/mesh/* \
     ${prefix}/ccsp/* \
 "
 
-FILES_${PN} = " \
-    /usr/bin/meshAgent \
-    /usr/bin/xmesh_diagnostics \
+FILES:${PN} = " \
+    ${bindir}/meshAgent \
+    ${bindir}/xmesh_diagnostics \
     ${prefix}/ccsp/mesh/meshAgent \
     ${prefix}/ccsp/mesh/MeshAgent.cfg \
     ${prefix}/ccsp/mesh/MeshAgentDM.cfg \
@@ -154,17 +154,20 @@ FILES_${PN} = " \
     ${prefix}/ccsp/mesh/active_host_filter.sh \
     ${systemd_unitdir}/system/meshAgent.path \
     ${systemd_unitdir}/system/meshwifi.service \
-    ${libdir}/libMeshAgentSsp.so* \
-    ${libdir}/libXmeshDiags.so* \
+    ${libdir}/libMeshAgentSsp.so.* \
+    ${libdir}/libXmeshDiags.so.* \
     ${sbindir}/led_control_script.sh \
     ${prefix}/ccsp/mesh/channel_keepout_setup.sh \
     ${prefix}/ccsp/mesh/run_channel_keepout.sh \
+    ${includedir} \
 "
-FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
-FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', '/etc/WFO_enabled', '', d)} "
-FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', ' ${systemd_unitdir}/system/meshAgent.service', '', d)} "
+FILES:${PN}-dev = "${libdir}/libMeshAgentSsp.so ${libdir}/libXmeshDiags.so"
 
-FILES_${PN}-dbg = " \
+FILES:${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
+FILES:${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', '/etc/WFO_enabled', '', d)} "
+FILES:${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', ' ${systemd_unitdir}/system/meshAgent.service', '', d)} "
+
+FILES:${PN}-dbg = " \
     ${prefix}/ccsp/mesh/.debug \
     ${prefix}/src/debug \
     ${bindir}/.debug \

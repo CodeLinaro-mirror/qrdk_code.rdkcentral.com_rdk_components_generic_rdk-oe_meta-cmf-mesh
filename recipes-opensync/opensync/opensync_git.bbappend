@@ -26,7 +26,7 @@ do_install:append_kirkstone () {
           rm ${D}/sbin/reboot
           rm -r ${D}/sbin 
 }
-FILES_${PN} += "${prefix}/include/opensync/ \
+FILES:${PN} += "${prefix}/include/opensync/ \
                 /etc \
                 ${includedir}/src/memutil.c.h \
  "
