@@ -1,4 +1,4 @@
-SRC_URI_remove = " ${RDK_COMPONENTS_ROOT_GIT}/generic/opensync-core/${OS_CORE_VERSION}/generic;protocol=${RDK_GIT_PROTOCOL};name=opensync-headers;branch=${RDK_GIT_BRANCH};destsuffix=git/os-headers"
+SRC_URI:remove = " ${RDK_COMPONENTS_ROOT_GIT}/generic/opensync-core/${OS_CORE_VERSION}/generic;protocol=${RDK_GIT_PROTOCOL};name=opensync-headers;branch=${RDK_GIT_BRANCH};destsuffix=git/os-headers"
 
 SRCREV_core ?= "${AUTOREV}"
 
@@ -11,7 +11,7 @@ OPENSYNC_CORE_BRANCH ?= "${OPENSYNC_DEFAULT_BRANCH}"
 
 OPENSYNC_CORE_URI ?= "${OPENSYNC_CORE_REPO_PATH};protocol=${OPENSYNC_CORE_REPO_PROTOCOL};branch=${OPENSYNC_CORE_BRANCH};name=core;destsuffix=git/core"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "${OPENSYNC_CORE_URI}"
 
