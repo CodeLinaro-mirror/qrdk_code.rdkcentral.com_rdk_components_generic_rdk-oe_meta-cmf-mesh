@@ -16,6 +16,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 SRC_URI += "${OPENSYNC_CORE_URI}"
 
 SRC_URI += "file://adding_structures_for_blaster.patch"
+SRC_URI += "file://adding_mld_variables.patch"
 
 S = "${WORKDIR}/git/core"
 
