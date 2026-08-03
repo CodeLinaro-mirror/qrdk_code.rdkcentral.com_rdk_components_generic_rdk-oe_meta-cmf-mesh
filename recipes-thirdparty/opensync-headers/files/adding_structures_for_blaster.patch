@@ -1,3 +1,4 @@
+Upstream-Status: Pending
 Source: Referred from comcast version of opensync ovsschema
 
 diff --git a/interfaces/opensync.ovsschema b/interfaces/opensync.ovsschema

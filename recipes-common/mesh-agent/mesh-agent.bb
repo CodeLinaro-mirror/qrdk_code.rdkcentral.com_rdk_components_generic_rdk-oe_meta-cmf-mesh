@@ -29,16 +29,19 @@ SRC_URI += "\
 file://enabling_dhcp_lease_resync.patch;apply=no \
 file://meshagent-enable-ovs-default.patch;apply=no \
 "
-
+CFLAGS:append:wrynose = " -I${RECIPE_SYSROOT}/usr/include/safeclib"
+do_configure:append:wrynose() {
+      sed -i 's/msgpackc/msgpack-c/g' ${S}/source/MeshAgentSsp/Makefile.am
+}
 # we need to patch to code for mesh-agent
 do_refplatform_meshagent_patches() {
     cd ${S}
     if [ ! -e patch_applied ]; then
         bbnote "Patching enabling_dhcp_lease_resync.patch"
-        patch  -p1 < ${WORKDIR}/enabling_dhcp_lease_resync.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
+        patch  -p1 < ${UNPACKDIR}/enabling_dhcp_lease_resync.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
 
         bbnote "Patching meshagent-enable-ovs-default.patch"
-        patch  -p1 < ${WORKDIR}/meshagent-enable-ovs-default.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
+        patch  -p1 < ${UNPACKDIR}/meshagent-enable-ovs-default.patch ${S}/source/MeshAgentSsp/cosa_mesh_apis.c
 
         touch patch_applied
     fi
@@ -61,10 +64,12 @@ CFLAGS:append = " \
     -DENABLE_MESH_SOCKETS \
     "
 CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
+CFLAGS:remove:wrynose = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
 CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
 
 CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-int-to-pointer-cast -Wno-address -Wno-unused-parameter -Wno-misleading-indentation -Wno-unused-function"
 
+CFLAGS:append:wrynose = "-Wno-incompatible-pointer-types"
 LDFLAGS:append = " \
     -ldbus-1 \
     -lrdkloggers \
@@ -75,8 +80,9 @@ LDFLAGS:append = " \
     -llibparodus \
 "
 LDFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
+LDFLAGS:remove:wrynose = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/${PN}-${PV}"
 
 inherit autotools systemd pkgconfig
 

@@ -9,7 +9,7 @@ OPENSYNC_CORE_REPO_PATH ?= "git://github.com/plume-design/opensync.git"
 OPENSYNC_CORE_REPO_PROTOCOL ?= "${OPENSYNC_DEFAULT_PROTOCOL}"
 OPENSYNC_CORE_BRANCH ?= "${OPENSYNC_DEFAULT_BRANCH}"
 
-OPENSYNC_CORE_URI ?= "${OPENSYNC_CORE_REPO_PATH};protocol=${OPENSYNC_CORE_REPO_PROTOCOL};branch=${OPENSYNC_CORE_BRANCH};name=core;destsuffix=git/core"
+OPENSYNC_CORE_URI ?= "${OPENSYNC_CORE_REPO_PATH};protocol=${OPENSYNC_CORE_REPO_PROTOCOL};branch=${OPENSYNC_CORE_BRANCH};name=core;destsuffix=${BP}/core"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
@@ -18,6 +18,6 @@ SRC_URI += "${OPENSYNC_CORE_URI}"
 SRC_URI += "file://adding_structures_for_blaster.patch"
 SRC_URI += "file://adding_mld_variables.patch"
 
-S = "${WORKDIR}/git/core"
+S = "${UNPACKDIR}/${PN}-${PV}/core"
 
 PROVIDES = "opensync-headers"
