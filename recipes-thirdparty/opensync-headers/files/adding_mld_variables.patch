@@ -1,4 +1,5 @@
 Source: Referred from master branch of opensync core
+Upstream-Status: Backport
 
 --- /interfaces/opensync.ovsschema	2026-06-24 13:03:21.162840465 +0100
 +++ /interfaces/opensync.ovsschema	2026-06-24 13:03:30.506897435 +0100
